@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3 uid="uid://u6cqj4um5xmr"]
+
+[ext_resource type="Material" uid="uid://du3ywa0yjbt57" path="res://C4F_Shooter/Materials/Orange.tres" id="1_6q72x"]
+[ext_resource type="Material" uid="uid://6mnnteuf443j" path="res://C4F_Shooter/Materials/Black.tres" id="2_7dgka"]
+[ext_resource type="Script" path="res://C4F_Shooter/Scripts/Shooter.gd" id="2_ufko0"]
+[ext_resource type="Script" path="res://C4F_Shooter/Scripts/Controller_Player.gd" id="4_ymdbv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_re5jm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5vx6j"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ujk13"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_be7l7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tfx2f"]
+
+[node name="Level" type="Node3D"]
+
+[node name="Ground" type="Node3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_re5jm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+material_override = ExtResource("1_6q72x")
+mesh = SubResource("BoxMesh_5vx6j")
+
+[node name="Shooter" type="CharacterBody3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 2.31, 0)
+script = ExtResource("2_ufko0")
+
+[node name="Camera3D" type="Camera3D" parent="Shooter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.537304, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shooter"]
+shape = SubResource("CapsuleShape3D_ujk13")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shooter"]
+mesh = SubResource("CapsuleMesh_be7l7")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Shooter"]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.5, 0, 0.471376, -0.274092)
+material_override = ExtResource("2_7dgka")
+mesh = SubResource("BoxMesh_tfx2f")
+
+[node name="Controller_Player" type="Node" parent="Shooter"]
+script = ExtResource("4_ymdbv")
