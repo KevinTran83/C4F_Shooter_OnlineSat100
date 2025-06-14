@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://u6cqj4um5xmr"]
+[gd_scene load_steps=12 format=3 uid="uid://u6cqj4um5xmr"]
 
 [ext_resource type="Material" uid="uid://du3ywa0yjbt57" path="res://C4F_Shooter/Materials/Orange.tres" id="1_6q72x"]
+[ext_resource type="Script" path="res://C4F_Shooter/Scripts/PlayerSettings.gd" id="1_qkl62"]
 [ext_resource type="Material" uid="uid://6mnnteuf443j" path="res://C4F_Shooter/Materials/Black.tres" id="2_7dgka"]
 [ext_resource type="Script" path="res://C4F_Shooter/Scripts/Shooter.gd" id="2_ufko0"]
 [ext_resource type="Script" path="res://C4F_Shooter/Scripts/Controller_Player.gd" id="4_ymdbv"]
@@ -15,7 +16,12 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_tfx2f"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_8c42c"]
+
 [node name="Level" type="Node3D"]
+
+[node name="PlayerSettings" type="Node" parent="."]
+script = ExtResource("1_qkl62")
 
 [node name="Ground" type="Node3D" parent="."]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
@@ -29,12 +35,11 @@ shape = SubResource("BoxShape3D_re5jm")
 material_override = ExtResource("1_6q72x")
 mesh = SubResource("BoxMesh_5vx6j")
 
-[node name="Shooter" type="CharacterBody3D" parent="."]
+[node name="Shooter" type="CharacterBody3D" parent="." node_paths=PackedStringArray("head", "forwardVector")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 2.31, 0)
 script = ExtResource("2_ufko0")
-
-[node name="Camera3D" type="Camera3D" parent="Shooter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.537304, 0)
+head = NodePath("ForwardVector/Camera3D")
+forwardVector = NodePath("ForwardVector")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Shooter"]
 shape = SubResource("CapsuleShape3D_ujk13")
@@ -49,3 +54,15 @@ mesh = SubResource("BoxMesh_tfx2f")
 
 [node name="Controller_Player" type="Node" parent="Shooter"]
 script = ExtResource("4_ymdbv")
+
+[node name="ForwardVector" type="Node3D" parent="Shooter"]
+
+[node name="Camera3D" type="Camera3D" parent="Shooter/ForwardVector"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.537306, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.586639, -0.448714, 0.674174, 0.607542, 0.794287, 2.36716e-08, -0.535488, 0.409589, 0.738573, 0, 1.64131, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25242, 0.801632, -1.16867)
+mesh = SubResource("BoxMesh_8c42c")
