@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://u6cqj4um5xmr"]
+[gd_scene load_steps=15 format=3 uid="uid://u6cqj4um5xmr"]
 
 [ext_resource type="Material" uid="uid://du3ywa0yjbt57" path="res://C4F_Shooter/Materials/Orange.tres" id="1_6q72x"]
 [ext_resource type="Script" path="res://C4F_Shooter/Scripts/PlayerSettings.gd" id="1_qkl62"]
 [ext_resource type="Material" uid="uid://6mnnteuf443j" path="res://C4F_Shooter/Materials/Black.tres" id="2_7dgka"]
 [ext_resource type="Script" path="res://C4F_Shooter/Scripts/Shooter.gd" id="2_ufko0"]
 [ext_resource type="Script" path="res://C4F_Shooter/Scripts/Controller_Player.gd" id="4_ymdbv"]
+[ext_resource type="Script" path="res://C4F_Shooter/Scripts/Firearm.gd" id="6_st133"]
+[ext_resource type="PackedScene" uid="uid://pgcsrlydjbir" path="res://C4F_Shooter/Nodes/Projectile.tscn" id="7_423ul"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_re5jm"]
 
@@ -15,6 +17,8 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_be7l7"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_tfx2f"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wsqwc"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_8c42c"]
 
@@ -35,11 +39,13 @@ shape = SubResource("BoxShape3D_re5jm")
 material_override = ExtResource("1_6q72x")
 mesh = SubResource("BoxMesh_5vx6j")
 
-[node name="Shooter" type="CharacterBody3D" parent="." node_paths=PackedStringArray("head", "forwardVector")]
+[node name="Shooter" type="CharacterBody3D" parent="." node_paths=PackedStringArray("head", "forwardVector", "equipped")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 2.31, 0)
 script = ExtResource("2_ufko0")
+moveSpeed = 5.0
 head = NodePath("ForwardVector/Camera3D")
 forwardVector = NodePath("ForwardVector")
+equipped = NodePath("ForwardVector/Camera3D/Firearm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Shooter"]
 shape = SubResource("CapsuleShape3D_ujk13")
@@ -59,6 +65,19 @@ script = ExtResource("4_ymdbv")
 
 [node name="Camera3D" type="Camera3D" parent="Shooter/ForwardVector"]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.537306, 0)
+
+[node name="Firearm" type="Node3D" parent="Shooter/ForwardVector/Camera3D" node_paths=PackedStringArray("muzzle")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0728138, -0.0328147, -0.131998)
+script = ExtResource("6_st133")
+muzzle = NodePath("Muzzle")
+projectile = ExtResource("7_423ul")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shooter/ForwardVector/Camera3D/Firearm"]
+transform = Transform3D(0.02, 0, 0, 0, 0.05, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("BoxMesh_wsqwc")
+
+[node name="Muzzle" type="Node3D" parent="Shooter/ForwardVector/Camera3D/Firearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0149984, -0.0679313)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.586639, -0.448714, 0.674174, 0.607542, 0.794287, 2.36716e-08, -0.535488, 0.409589, 0.738573, 0, 1.64131, 0)

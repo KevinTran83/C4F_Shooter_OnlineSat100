@@ -5,7 +5,7 @@ extends Node
 var playerSettings : PlayerSettings
 
 func _ready() -> void:
-    playerSettings = get_tree().get_root().get_node("PlayerSettings")
+    playerSettings = get_tree().get_root().get_node("Level").get_node("PlayerSettings")
 
 func _process(delta: float) -> void:
     if Input.is_action_just_pressed("Jump") : shooter.Jump()
@@ -21,3 +21,5 @@ func _process(delta: float) -> void:
     shooter.Move(Vector3(dir_x, 0, dir_z).normalized())
     
     shooter.Look(Input.get_last_mouse_velocity() * playerSettings.GetSensitivity())
+    
+    if Input.is_action_pressed("Fire") : shooter.Shoot()

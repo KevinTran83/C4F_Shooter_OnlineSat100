@@ -9,6 +9,8 @@ extends CharacterBody3D
 @export var head : Node3D
 @export var forwardVector : Node3D
 
+@export var equipped : Firearm
+
 @onready var gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var rayDown : RayCast3D
@@ -45,7 +47,7 @@ func Move(dir : Vector3) -> void :
     
     var vel_y : float = velocity.y
     
-    velocity = dir * currentSpeed + Vector3.UP * vel_y
+    velocity = basis * dir * currentSpeed + Vector3.UP * vel_y
 
 func Look(axis : Vector2) -> void:
     if not head or not forwardVector : return
@@ -53,3 +55,7 @@ func Look(axis : Vector2) -> void:
     head.rotate_x( -deg_to_rad(axis.y * lookSpeed) * dt )
     #forwardVector.rotate_y( -deg_to_rad(axis.x * lookSpeed) * dt )
     rotate_y( -deg_to_rad(axis.x * lookSpeed) * dt )
+
+func Shoot() -> void:
+    if not equipped : return
+    equipped.PullTrigger()
